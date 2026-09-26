@@ -22,7 +22,7 @@ ALLOWED_HOSTS = [item.strip() for item in allowed_hosts.split(",") if item.strip
 
 csrf_origins = os.getenv(
     "CSRF_TRUSTED_ORIGINS",
-    "http://127.0.0.1:8000,http://localhost:8000,https://*.vercel.app",
+    "http://127.0.0.1:8000,http://localhost:8000,https://*.vercel.app,sanskarkumar.vercel.app",
 )
 CSRF_TRUSTED_ORIGINS = [
     item.strip() for item in csrf_origins.split(",") if item.strip()
