@@ -14,18 +14,49 @@ DEBUG = os.getenv("DJANGO_DEBUG", "0").lower() in {"1", "true", "yes"}
 if not DEBUG and SECRET_KEY == "dev-only-change-me":
     raise RuntimeError("Set DJANGO_SECRET_KEY before running with DJANGO_DEBUG=0.")
 
-allowed_hosts = os.getenv(
-    "DJANGO_ALLOWED_HOSTS",
-    "127.0.0.1,localhost,.vercel.app",
-)
-ALLOWED_HOSTS = [item.strip() for item in allowed_hosts.split(",") if item.strip()]
+def _clean_host(value: str) -> str:
+    """Normalize an ALLOWED_HOSTS entry while keeping it host-only."""
+    value = (value or "").strip()
+    if not value:
+        return ""
+    value = value.split("://", 1)[-1]
+    value = value.split("/", 1)[0]
+    value = value.split(":", 1)[0]
+    return value.strip().lower()
+
+
+# Always keep safe local defaults. A blank or partially configured environment
+# variable must not accidentally replace these defaults with an empty list.
+allowed_hosts = {
+    "127.0.0.1",
+    "localhost",
+    ".vercel.app",
+}
+
+for raw_value in os.getenv("DJANGO_ALLOWED_HOSTS", "").split(","):
+    cleaned = _clean_host(raw_value)
+    if cleaned:
+        allowed_hosts.add(cleaned)
+
+# Vercel exposes these hostnames at build/runtime. Including them makes the
+# deployment resilient to preview URLs and future custom domains.
+for env_name in (
+    "VERCEL_URL",
+    "VERCEL_BRANCH_URL",
+    "VERCEL_PROJECT_PRODUCTION_URL",
+):
+    cleaned = _clean_host(os.getenv(env_name, ""))
+    if cleaned:
+        allowed_hosts.add(cleaned)
+
+ALLOWED_HOSTS = sorted(allowed_hosts)
 
 csrf_origins = os.getenv(
     "CSRF_TRUSTED_ORIGINS",
-    "http://127.0.0.1:8000,http://localhost:8000,https://*.vercel.app,sanskarkumar.vercel.app",
+    "http://127.0.0.1:8000,http://localhost:8000,https://*.vercel.app",
 )
 CSRF_TRUSTED_ORIGINS = [
-    item.strip() for item in csrf_origins.split(",") if item.strip()
+    item.strip().rstrip("/") for item in csrf_origins.split(",") if item.strip()
 ]
 
 INSTALLED_APPS = [
