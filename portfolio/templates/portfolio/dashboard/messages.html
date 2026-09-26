@@ -1,0 +1,32 @@
+{% extends "portfolio/dashboard/base.html" %}
+
+{% block heading %}Messages{% endblock %}
+
+{% block dashboard_content %}
+<section class="dashboard-card">
+    <div class="card-head">
+        <div><span class="dashboard-kicker">INBOX</span><h2>Contact messages</h2></div>
+        <span class="count-pill">{{ messages_list|length }}</span>
+    </div>
+
+    {% if messages_list %}
+    <div class="message-list">
+        {% for item in messages_list %}
+        <article class="message-row {% if not item.is_read %}is-unread{% endif %}">
+            <div>
+                <div class="message-row-top"><strong>{{ item.subject }}</strong><span>{{ item.created_at|date:"d M Y · H:i" }}</span></div>
+                <p>{{ item.name }} · <a href="mailto:{{ item.email }}">{{ item.email }}</a></p>
+                <div class="message-body">{{ item.message|linebreaksbr }}</div>
+            </div>
+            <div class="message-actions">
+                {% if not item.is_read %}<a href="{% url 'dashboard_message_read' pk=item.pk %}">Mark read</a>{% endif %}
+                <a class="danger-link" href="{% url 'dashboard_message_delete' pk=item.pk %}">Delete</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-dashboard"><strong>Your inbox is empty.</strong><p>Messages submitted through the public contact form will appear here.</p></div>
+    {% endif %}
+</section>
+{% endblock %}

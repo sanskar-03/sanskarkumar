@@ -1,0 +1,16 @@
+{% extends "portfolio/dashboard/base.html" %}
+
+{% block heading %}Delete {{ config.label }}{% endblock %}
+
+{% block dashboard_content %}
+<section class="dashboard-card confirm-card">
+    <span class="dashboard-kicker">PERMANENT ACTION</span>
+    <h2>Remove “{{ instance }}”?</h2>
+    <p>This cannot be undone from the dashboard.</p>
+    <form method="post">
+        {% csrf_token %}
+        <a class="button button-ghost" href="{% url 'dashboard_list' kind=kind %}">Keep it</a>
+        <button class="button button-danger" type="submit">Delete</button>
+    </form>
+</section>
+{% endblock %}

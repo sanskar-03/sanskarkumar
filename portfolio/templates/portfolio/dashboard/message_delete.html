@@ -1,0 +1,16 @@
+{% extends "portfolio/dashboard/base.html" %}
+
+{% block heading %}Delete message{% endblock %}
+
+{% block dashboard_content %}
+<section class="dashboard-card confirm-card">
+    <span class="dashboard-kicker">INBOX</span>
+    <h2>Delete this message?</h2>
+    <p>{{ item.name }} · {{ item.subject }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <a class="button button-ghost" href="{% url 'dashboard_messages' %}">Keep it</a>
+        <button class="button button-danger" type="submit">Delete message</button>
+    </form>
+</section>
+{% endblock %}

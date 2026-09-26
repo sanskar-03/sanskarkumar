@@ -1,0 +1,50 @@
+{% extends "portfolio/base.html" %}
+
+{% block title %}{{ settings.site_title }}{% endblock %}
+
+{% block content %}
+<section class="coming-page">
+    <div class="coming-orbit orbit-one"></div>
+    <div class="coming-orbit orbit-two"></div>
+
+    <div class="shell coming-inner">
+        <div class="coming-topline">
+            <span class="brand-mark">{{ settings.owner_name|slice:":1" }}</span>
+            <span>{{ settings.owner_name }}</span>
+            <span class="coming-state">Coming soon</span>
+        </div>
+
+        <div class="coming-grid">
+            <div class="coming-copy reveal">
+                <p class="eyebrow">CSE • SOFTWARE • BUILDING</p>
+                <h1>{{ settings.coming_soon_title }}</h1>
+                <p class="lead">{{ settings.coming_soon_message }}</p>
+                {% if settings.email %}
+                <div class="coming-actions">
+                    <a class="button button-light" href="mailto:{{ settings.email }}">Get in Touch <span aria-hidden="true">↗</span></a>
+                    <a class="coming-email" href="mailto:{{ settings.email }}">{{ settings.email }}</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="coming-card reveal">
+                <div class="coming-card-top"><span>01</span><span>Portfolio build</span></div>
+                <div class="coming-line"></div>
+                <div class="coming-note">
+                    <strong>{{ settings.role_line }}</strong>
+                    <p>{{ settings.availability }}</p>
+                </div>
+                <div class="coming-card-foot">
+                    <span>{{ settings.location|default:"Based in India" }}</span>
+                    <span>v2.0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="coming-foot">
+            <span>Projects • Education • Experience • Coding profiles</span>
+            <span>© <span data-current-year></span></span>
+        </div>
+    </div>
+</section>
+{% endblock %}

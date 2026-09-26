@@ -1,0 +1,83 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f8fb">
+    <meta name="description" content="{{ site_settings.site_title }}">
+    <title>{% block title %}{{ site_settings.site_title }}{% endblock %}</title>
+    <script>
+        (() => {
+            try {
+                const stored = localStorage.getItem("portfolio-theme");
+                const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+                document.documentElement.dataset.theme = stored || (systemDark ? "dark" : "light");
+            } catch (_) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="{% static 'portfolio/css/site.css' %}">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="scroll-progress" aria-hidden="true"></div>
+<button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode" title="Toggle dark/light mode">
+    <span class="theme-icon" aria-hidden="true">◐</span>
+</button>
+
+{% if not site_settings.coming_soon %}
+<header class="site-header">
+    <div class="shell header-inner">
+        <a class="brand" href="{% url 'home' %}">
+            <span class="brand-mark">{{ site_settings.owner_name|slice:":1" }}</span>
+            <span>{{ site_settings.owner_name }}</span>
+        </a>
+
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+
+        <nav id="site-nav" class="site-nav" aria-label="Primary">
+            <a href="#about">About</a>
+            <a href="#work">Work</a>
+            <a href="#experience">Experience</a>
+            <a href="#education">Education</a>
+            <a href="#profiles">Profiles</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </div>
+</header>
+{% endif %}
+
+{% if messages %}
+<div class="toast-wrap" aria-live="polite">
+    {% for message in messages %}<div class="toast">{{ message }}</div>{% endfor %}
+</div>
+{% endif %}
+
+<main id="main-content">
+    {% block content %}{% endblock %}
+</main>
+
+{% if not site_settings.coming_soon %}
+<footer class="site-footer">
+    <div class="shell footer-grid">
+        <div>
+            <div class="footer-name">{{ site_settings.owner_name }}</div>
+            <p>{{ site_settings.footer_note }}</p>
+        </div>
+        <div class="footer-links">
+            {% if site_settings.github_url %}<a href="{{ site_settings.github_url }}" target="_blank" rel="noreferrer">GitHub ↗</a>{% endif %}
+            {% if site_settings.linkedin_url %}<a href="{{ site_settings.linkedin_url }}" target="_blank" rel="noreferrer">LinkedIn ↗</a>{% endif %}
+            {% if site_settings.email %}<a href="mailto:{{ site_settings.email }}">Email ↗</a>{% endif %}
+            <a href="{% url 'login' %}">CMS ↗</a>
+        </div>
+    </div>
+    <div class="shell footer-bottom">
+        <span>© <span data-current-year></span> {{ site_settings.owner_name }}</span>
+        <span>Built with Django · Designed to evolve</span>
+    </div>
+</footer>
+{% endif %}
+
+<script src="{% static 'portfolio/js/site.js' %}" defer></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "portfolio/dashboard/base.html" %}
+
+{% block heading %}{% if instance %}Edit{% else %}Add{% endif %} {{ config.label }}{% endblock %}
+
+{% block dashboard_content %}
+<form method="post" enctype="multipart/form-data" class="dashboard-card form-card">
+    {% csrf_token %}
+    <div class="form-card-head">
+        <div><span class="dashboard-kicker">{{ config.plural|upper }}</span><h2>{% if instance %}Update {{ instance }}{% else %}New {{ config.label }}{% endif %}</h2></div>
+    </div>
+
+    {% if form.non_field_errors %}<div class="field-error-box">{{ form.non_field_errors }}</div>{% endif %}
+
+    <div class="form-grid">
+        {% for field in form %}
+        <div class="form-row {% if field.field.widget.attrs.rows %}span-2{% endif %}">
+            {{ field.label_tag }}{{ field }}
+            {% if field.name == "image_url" and instance.image_url %}
+                <div class="current-image-wrap"><img class="current-image project-preview" src="{{ instance.image_url }}" alt="Current project image"></div>
+            {% endif %}
+            {% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}
+            {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="form-actions">
+        <a class="button button-ghost" href="{% url 'dashboard_list' kind=kind %}">Cancel</a>
+        <button class="button button-dark" type="submit">Save {{ config.label|lower }}</button>
+    </div>
+</form>
+{% endblock %}

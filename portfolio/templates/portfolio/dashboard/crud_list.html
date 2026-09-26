@@ -1,0 +1,42 @@
+{% extends "portfolio/dashboard/base.html" %}
+{% load portfolio_extras %}
+
+{% block heading %}{{ config.plural }}{% endblock %}
+
+{% block dashboard_content %}
+<section class="dashboard-card">
+    <div class="card-head">
+        <div><span class="dashboard-kicker">CONTENT</span><h2>{{ config.plural }}</h2></div>
+        <a class="button button-dark button-small" href="{% url 'dashboard_create' kind=kind %}">Add {{ config.label }}</a>
+    </div>
+
+    {% if items %}
+    <div class="table-wrap">
+        <table class="content-table">
+            <thead>
+                <tr>{% for label, field in config.columns %}<th>{{ label }}</th>{% endfor %}<th class="actions-cell">Actions</th></tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    {% for label, field in config.columns %}<td>{{ item|get_field:field|pretty_value }}</td>{% endfor %}
+                    <td class="actions-cell">
+                        <div class="inline-actions">
+                            <a href="{% url 'dashboard_edit' kind=kind pk=item.pk %}">Edit</a>
+                            <a class="danger-link" href="{% url 'dashboard_delete' kind=kind pk=item.pk %}">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-dashboard">
+        <strong>No {{ config.plural|lower }} yet.</strong>
+        <p>Add your first one and it will be ready for the public site.</p>
+        <a class="button button-dark" href="{% url 'dashboard_create' kind=kind %}">Add {{ config.label }}</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

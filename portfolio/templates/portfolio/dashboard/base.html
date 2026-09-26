@@ -1,0 +1,116 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Dashboard — {{ site_settings.owner_name }}{% endblock %}</title>
+    <script>
+        (() => {
+            try {
+                const stored = localStorage.getItem("portfolio-theme");
+                const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+                document.documentElement.dataset.theme = stored || (systemDark ? "dark" : "light");
+            } catch (_) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="{% static 'portfolio/css/dashboard.css' %}">
+</head>
+<body>
+<div class="dashboard-shell">
+    <aside class="sidebar">
+        <div class="sidebar-head">
+            <a class="dashboard-brand" href="{% url 'dashboard_home' %}">
+                <span class="brand-mark">{{ site_settings.owner_name|slice:":1" }}</span>
+                <span>Portfolio CMS</span>
+            </a>
+        </div>
+
+        <div class="sidebar-status {% if site_settings.coming_soon %}is-locked{% endif %}">
+            <span class="status-dot"></span>
+            {% if site_settings.coming_soon %}Coming Soon{% else %}Live{% endif %}
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Dashboard">
+            <a href="{% url 'dashboard_home' %}">Overview</a>
+            <a href="{% url 'dashboard_settings' %}">Site Settings</a>
+            {% for slug, label in dashboard_nav %}
+            <a href="{% url 'dashboard_list' kind=slug %}">{{ label }}</a>
+            {% endfor %}
+            <a href="{% url 'dashboard_messages' %}">Messages</a>
+        </nav>
+
+        <div class="sidebar-foot">
+            <a href="{% url 'home' %}" target="_blank" rel="noreferrer">View site ↗</a>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Sign out</button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="dashboard-topbar">
+            <div>
+                <span class="dashboard-kicker">CUSTOM CMS</span>
+                <h1>{% block heading %}Overview{% endblock %}</h1>
+            </div>
+            <div class="dashboard-actions">
+                <button class="dashboard-theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">
+                    <span class="theme-icon" aria-hidden="true">◐</span>
+                    <span>Theme</span>
+                </button>
+                <div class="dashboard-user"><span>{{ request.user.username }}</span></div>
+            </div>
+        </div>
+
+        {% if messages %}
+        <div class="dashboard-toast-wrap">
+            {% for message in messages %}<div class="dashboard-toast">{{ message }}</div>{% endfor %}
+        </div>
+        {% endif %}
+
+        {% block dashboard_content %}{% endblock %}
+    </main>
+</div>
+<script>
+window.DASHBOARD_NAV = [
+    ["projects", "Projects"],
+    ["skills", "Skills"],
+    ["experience", "Experience"],
+    ["education", "Education"],
+    ["certifications", "Certifications"],
+    ["coding-profiles", "Coding Profiles"],
+    ["achievements", "Achievements"],
+    ["social-links", "Social Links"]
+];
+</script>
+<script>
+(() => {
+    const root = document.documentElement;
+    const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            const dark = theme === "dark";
+            button.setAttribute("aria-pressed", String(dark));
+            button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+            const icon = button.querySelector(".theme-icon");
+            if (icon) icon.textContent = dark ? "☼" : "◐";
+        });
+    };
+    document.addEventListener("DOMContentLoaded", () => {
+        applyTheme(root.dataset.theme || "light");
+        document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const next = root.dataset.theme === "dark" ? "light" : "dark";
+                root.dataset.theme = next;
+                try { localStorage.setItem("portfolio-theme", next); } catch (_) {}
+                applyTheme(next);
+            });
+        });
+    });
+})();
+</script>
+<script src="{% static 'portfolio/js/dashboard.js' %}" defer></script>
+</body>
+</html>

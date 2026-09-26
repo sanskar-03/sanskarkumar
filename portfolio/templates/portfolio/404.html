@@ -1,0 +1,11 @@
+{% extends "portfolio/base.html" %}
+{% block title %}Page not found — {{ site_settings.site_title }}{% endblock %}
+{% block content %}
+<section class="section-pad">
+    <div class="shell section-body">
+        <p class="eyebrow">404</p>
+        <h2>That page is not here.</h2>
+        <a class="button button-dark" href="{% url 'home' %}" style="margin-top: 24px;">Back home</a>
+    </div>
+</section>
+{% endblock %}

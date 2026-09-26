@@ -1,0 +1,47 @@
+{% extends "portfolio/dashboard/base.html" %}
+
+{% block heading %}Overview{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-grid dashboard-grid-3">
+    <a class="metric-card metric-card-accent" href="{% url 'dashboard_settings' %}">
+        <span class="metric-label">Public status</span>
+        <strong>{% if settings.coming_soon %}Coming soon{% else %}Live{% endif %}</strong>
+        <small>Change in Site Settings</small>
+    </a>
+    <a class="metric-card" href="{% url 'dashboard_list' kind='projects' %}">
+        <span class="metric-label">Projects</span>
+        <strong>{{ section_counts.0.1 }}</strong>
+        <small>Portfolio work</small>
+    </a>
+    <a class="metric-card" href="{% url 'dashboard_messages' %}">
+        <span class="metric-label">Unread messages</span>
+        <strong>{{ unread_messages }}</strong>
+        <small>Contact inbox</small>
+    </a>
+</div>
+
+<section class="dashboard-card">
+    <div class="card-head">
+        <div><span class="dashboard-kicker">CONTENT</span><h2>Portfolio sections</h2></div>
+        <a class="button button-small" href="{% url 'dashboard_settings' %}">Edit settings</a>
+    </div>
+
+    <div class="section-list">
+        {% for label, count, slug in section_counts %}
+        <a class="section-list-row" href="{% url 'dashboard_list' kind=slug %}">
+            <span>{{ label }}</span><span>{{ count }}</span><span>→</span>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="dashboard-card settings-callout">
+    <div>
+        <span class="dashboard-kicker">PUBLISH CONTROL</span>
+        <h2>{% if settings.coming_soon %}The public portfolio is still closed.{% else %}The public portfolio is live.{% endif %}</h2>
+        <p>{% if settings.coming_soon %}Finish your content, then turn off Coming Soon to publish it.{% else %}Changes are visible to visitors as soon as you save them.{% endif %}</p>
+    </div>
+    <a class="button button-dark" href="{% url 'dashboard_settings' %}">Open Site Settings</a>
+</section>
+{% endblock %}

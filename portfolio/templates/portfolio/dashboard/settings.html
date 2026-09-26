@@ -1,0 +1,43 @@
+{% extends "portfolio/dashboard/base.html" %}
+
+{% block heading %}Site Settings{% endblock %}
+
+{% block dashboard_content %}
+<form method="post" enctype="multipart/form-data" class="dashboard-card form-card">
+    {% csrf_token %}
+    <div class="form-card-head">
+        <div><span class="dashboard-kicker">GLOBAL CONTENT</span><h2>Public site details</h2></div>
+        <div class="publish-switch {% if form.coming_soon.value %}is-locked{% endif %}">
+            <span></span>{% if form.coming_soon.value %}Coming soon is ON{% else %}Portfolio is LIVE{% endif %}
+        </div>
+    </div>
+
+    {% if form.non_field_errors %}<div class="field-error-box">{{ form.non_field_errors }}</div>{% endif %}
+
+    <div class="form-grid">
+        {% for field in form %}
+        <div class="form-row {% if field.name in 'intro,about,coming_soon_message' %}span-2{% endif %} {% if field.name == 'coming_soon' %}toggle-row span-2{% endif %}">
+            {% if field.name == 'coming_soon' %}
+                <div>
+                    {{ field }}
+                    <label for="{{ field.id_for_label }}" class="toggle-label">{{ field.label }}</label>
+                    <small>When enabled, visitors only see the Coming Soon page.</small>
+                </div>
+            {% else %}
+                {{ field.label_tag }}{{ field }}
+                {% if field.name == "profile_image_url" and settings.profile_image_url %}
+                    <div class="current-image-wrap"><img class="current-image" src="{{ settings.profile_image_url }}" alt="Current profile image"></div>
+                {% endif %}
+                {% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}
+            {% endif %}
+            {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="form-actions">
+        <a class="button button-ghost" href="{% url 'dashboard_home' %}">Cancel</a>
+        <button class="button button-dark" type="submit">Save settings</button>
+    </div>
+</form>
+{% endblock %}
