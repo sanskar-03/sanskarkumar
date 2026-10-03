@@ -3,41 +3,171 @@
 {% block heading %}Site Settings{% endblock %}
 
 {% block dashboard_content %}
-<form method="post" enctype="multipart/form-data" class="dashboard-card form-card">
+
+<form
+    method="post"
+    enctype="multipart/form-data"
+    class="cms-form"
+    novalidate
+>
     {% csrf_token %}
-    <div class="form-card-head">
-        <div><span class="dashboard-kicker">GLOBAL CONTENT</span><h2>Public site details</h2></div>
-        <div class="publish-switch {% if form.coming_soon.value %}is-locked{% endif %}">
-            <span></span>{% if form.coming_soon.value %}Coming soon is ON{% else %}Portfolio is LIVE{% endif %}
+
+    <div class="cms-form-header">
+        <div>
+            <span class="dashboard-kicker">GLOBAL</span>
+            <h2>Site Settings</h2>
+            <p class="cms-form-subtitle">
+                Manage your core portfolio identity and global configuration.
+            </p>
+        </div>
+
+        <div class="cms-status">
+            <span class="cms-status-dot"></span>
+            <span id="formState">Unsaved</span>
         </div>
     </div>
 
-    {% if form.non_field_errors %}<div class="field-error-box">{{ form.non_field_errors }}</div>{% endif %}
-
-    <div class="form-grid">
-        {% for field in form %}
-        <div class="form-row {% if field.name in 'intro,about,coming_soon_message' %}span-2{% endif %} {% if field.name == 'coming_soon' %}toggle-row span-2{% endif %}">
-            {% if field.name == 'coming_soon' %}
-                <div>
-                    {{ field }}
-                    <label for="{{ field.id_for_label }}" class="toggle-label">{{ field.label }}</label>
-                    <small>When enabled, visitors only see the Coming Soon page.</small>
-                </div>
-            {% else %}
-                {{ field.label_tag }}{{ field }}
-                {% if field.name == "profile_image_url" and settings.profile_image_url %}
-                    <div class="current-image-wrap"><img class="current-image" src="{{ settings.profile_image_url }}" alt="Current profile image"></div>
-                {% endif %}
-                {% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}
-            {% endif %}
-            {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+    {% if form.non_field_errors %}
+        <div class="field-error-box">
+            {{ form.non_field_errors }}
         </div>
-        {% endfor %}
-    </div>
+    {% endif %}
 
-    <div class="form-actions">
+    <section class="cms-section">
+        <div class="cms-section-heading">
+            <span>01</span>
+            <div>
+                <h3>Identity</h3>
+                <p>Your core portfolio identity.</p>
+            </div>
+        </div>
+        <div class="cms-grid cms-grid-2">
+            {% include "portfolio/dashboard/field.html" with field=form.owner_name %}
+            {% include "portfolio/dashboard/field.html" with field=form.role_line %}
+            {% include "portfolio/dashboard/field.html" with field=form.site_title extra_class="full-field" %}
+        </div>
+    </section>
+
+    <section class="cms-section">
+        <div class="cms-section-heading">
+            <span>02</span>
+            <div>
+                <h3>Introduction</h3>
+            </div>
+        </div>
+        {% include "portfolio/dashboard/field.html" with field=form.intro %}
+    </section>
+
+    <section class="cms-section">
+        <div class="cms-section-heading">
+            <span>03</span>
+            <div>
+                <h3>About</h3>
+            </div>
+        </div>
+        {% include "portfolio/dashboard/field.html" with field=form.about extra_class="textarea-xl" %}
+    </section>
+
+    <section class="cms-section">
+        <div class="cms-section-heading">
+            <span>04</span>
+            <div>
+                <h3>Contact</h3>
+            </div>
+        </div>
+        <div class="cms-grid cms-grid-2">
+            {% include "portfolio/dashboard/field.html" with field=form.email %}
+            {% include "portfolio/dashboard/field.html" with field=form.phone %}
+            {% include "portfolio/dashboard/field.html" with field=form.location extra_class="full-field" %}
+        </div>
+    </section>
+
+    <section class="cms-section">
+        <div class="cms-section-heading">
+            <span>05</span>
+            <div>
+                <h3>Social</h3>
+            </div>
+        </div>
+        <div class="cms-grid cms-grid-2">
+            {% include "portfolio/dashboard/field.html" with field=form.github_url extra_class="url-field" %}
+            {% include "portfolio/dashboard/field.html" with field=form.linkedin_url extra_class="url-field" %}
+            {% include "portfolio/dashboard/field.html" with field=form.leetcode_url extra_class="url-field" %}
+            {% include "portfolio/dashboard/field.html" with field=form.hacker_rank_url extra_class="url-field" %}
+        </div>
+        {% include "portfolio/dashboard/field.html" with field=form.resume_url extra_class="full-field url-field" %}
+    </section>
+
+    <section class="cms-section">
+        <div class="cms-section-heading">
+            <span>06</span>
+            <div>
+                <h3>Profile Image</h3>
+            </div>
+        </div>
+        {% if settings and settings.profile_image_url %}
+            <div class="media-preview" style="aspect-ratio: 1/1; max-width: 250px;">
+                <img src="{{ settings.profile_image_url }}" alt="Current profile image">
+            </div>
+        {% endif %}
+        <div class="upload-zone">
+            <div class="upload-icon">↑</div>
+            {{ form.profile_image_upload }}
+            <strong>Upload profile image</strong>
+            <span>JPG, PNG, WEBP or GIF · Maximum 5 MB</span>
+        </div>
+        {% include "portfolio/dashboard/field.html" with field=form.profile_image_url extra_class="full-field muted-field" %}
+    </section>
+
+    <section class="cms-section">
+        <div class="cms-section-heading">
+            <span>07</span>
+            <div>
+                <h3>Availability</h3>
+            </div>
+        </div>
+        {% include "portfolio/dashboard/field.html" with field=form.availability %}
+    </section>
+
+    <section class="cms-section">
+        <div class="cms-section-heading">
+            <span>08</span>
+            <div>
+                <h3>Publishing</h3>
+            </div>
+        </div>
+        <div class="cms-options">
+            <label class="switch-card">
+                {{ form.coming_soon }}
+                <span>
+                    <strong>Coming soon mode</strong>
+                    <small>Hide the portfolio behind a holding page.</small>
+                </span>
+            </label>
+        </div>
+        <div class="cms-grid cms-grid-2" style="margin-top: 18px;">
+            {% include "portfolio/dashboard/field.html" with field=form.coming_soon_title %}
+        </div>
+        {% include "portfolio/dashboard/field.html" with field=form.coming_soon_message extra_class="full-field" %}
+    </section>
+
+    <section class="cms-section">
+        <div class="cms-section-heading">
+            <span>09</span>
+            <div>
+                <h3>Footer</h3>
+            </div>
+        </div>
+        {% include "portfolio/dashboard/field.html" with field=form.footer_note %}
+    </section>
+
+    <div class="cms-savebar">
         <a class="button button-ghost" href="{% url 'dashboard_home' %}">Cancel</a>
-        <button class="button button-dark" type="submit">Save settings</button>
+        <button class="button button-dark cms-save" type="submit">
+            <span>Save Settings</span>
+        </button>
     </div>
+
 </form>
+
 {% endblock %}
