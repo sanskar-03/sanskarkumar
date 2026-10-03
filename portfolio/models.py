@@ -172,7 +172,7 @@ class Certification(models.Model):
     issue_date = models.DateField(blank=True, null=True)
     credential_url = models.URLField(blank=True)
     credential_id = models.CharField(max_length=120, blank=True)
-    certificate_file = models.FileField(upload_to="certificates/", blank=True, null=True, help_text="Upload your certificate PDF or image.")
+    image_url = models.URLField(blank=True)
     description = models.TextField(blank=True)
     order = models.PositiveIntegerField(default=0)
     visible = models.BooleanField(default=True)
@@ -255,22 +255,3 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.name} — {self.subject}"
-
-class DraftItem(models.Model):
-    SOURCE_CHOICES = [
-        ("github", "GitHub"),
-        ("linkedin", "LinkedIn"),
-    ]
-    source = models.CharField(max_length=20, choices=SOURCE_CHOICES)
-    draft_type = models.CharField(max_length=50, help_text="e.g. Project, Experience, Achievement")
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    link_url = models.URLField(blank=True)
-    raw_data = models.JSONField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ["-created_at"]
-
-    def __str__(self):
-        return f"Draft ({self.source}): {self.title}"

@@ -96,6 +96,13 @@ class EducationForm(StyledFormMixin, forms.ModelForm):
 
 
 class CertificationForm(StyledFormMixin, forms.ModelForm):
+    image_upload = forms.ImageField(
+        required=False,
+        label="Upload certificate image",
+        help_text="JPG, PNG, WEBP or GIF; up to 5 MB. Uploading replaces the image URL.",
+        widget=forms.ClearableFileInput(attrs={"accept": "image/*"}),
+    )
+
     class Meta:
         model = Certification
         fields = "__all__"
@@ -154,17 +161,3 @@ class DashboardLoginForm(AuthenticationForm):
         strip=False,
         widget=forms.PasswordInput(attrs={"class": "field-control", "autocomplete": "current-password"}),
     )
-
-from .models import DraftItem
-
-class DraftItemForm(forms.ModelForm):
-    class Meta:
-        model = DraftItem
-        fields = ["source", "draft_type", "title", "description", "link_url"]
-        widgets = {
-            "source": forms.Select(attrs={"class": "field-control"}),
-            "draft_type": forms.TextInput(attrs={"class": "field-control"}),
-            "title": forms.TextInput(attrs={"class": "field-control"}),
-            "description": forms.Textarea(attrs={"class": "field-control", "rows": 4}),
-            "link_url": forms.URLInput(attrs={"class": "field-control"}),
-        }
