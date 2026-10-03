@@ -6,15 +6,15 @@
 <section class="hero section-pad" data-spotlight>
     <div class="shell hero-grid">
         <div class="hero-copy reveal">
-            <p class="eyebrow">COMPUTER SCIENCE • SOFTWARE • CRAFT</p>
+            <p class="eyebrow">COMPUTER SCIENCE â€¢ SOFTWARE â€¢ CRAFT</p>
             <h1>{{ settings.role_line }}</h1>
             <p class="hero-lead">{{ settings.intro }}</p>
 
             <div class="hero-actions">
-                <a class="button button-dark" href="#work">View selected work <span aria-hidden="true">↓</span></a>
-                <a class="button button-accent" href="#contact">Get in Touch <span aria-hidden="true">↗</span></a>
+                <a class="button button-dark" href="#work">View selected work <span aria-hidden="true">â†“</span></a>
+                <a class="button button-accent" href="#contact">Get in Touch <span aria-hidden="true">â†—</span></a>
                 {% if settings.resume_url %}
-                <a class="button button-ghost" href="{{ settings.resume_url }}" target="_blank" rel="noreferrer">Resume <span aria-hidden="true">↗</span></a>
+                <a class="button button-ghost" href="{{ settings.resume_url }}" target="_blank" rel="noreferrer">Resume <span aria-hidden="true">â†—</span></a>
                 {% endif %}
             </div>
 
@@ -23,7 +23,7 @@
                 {% if settings.availability %}<span>{{ settings.availability }}</span>{% endif %}
             </div>
             {% if settings.email %}
-            <a class="hero-email" href="mailto:{{ settings.email }}">{{ settings.email }} <span aria-hidden="true">↗</span></a>
+            <a class="hero-email" href="mailto:{{ settings.email }}">{{ settings.email }} <span aria-hidden="true">â†—</span></a>
             {% endif %}
         </div>
 
@@ -56,8 +56,8 @@
             <p class="large-copy">{{ settings.about }}</p>
             <div class="contact-inline">
                 {% if settings.email %}<a href="mailto:{{ settings.email }}">{{ settings.email }}</a>{% endif %}
-                {% if settings.github_url %}<a href="{{ settings.github_url }}" target="_blank" rel="noreferrer">GitHub ↗</a>{% endif %}
-                {% if settings.linkedin_url %}<a href="{{ settings.linkedin_url }}" target="_blank" rel="noreferrer">LinkedIn ↗</a>{% endif %}
+                {% if settings.github_url %}<a href="{{ settings.github_url }}" target="_blank" rel="noreferrer">GitHub â†—</a>{% endif %}
+                {% if settings.linkedin_url %}<a href="{{ settings.linkedin_url }}" target="_blank" rel="noreferrer">LinkedIn â†—</a>{% endif %}
             </div>
         </div>
     </div>
@@ -128,8 +128,8 @@
                         {% for tech in project.tech_list %}<span class="tag">{{ tech }}</span>{% endfor %}
                     </div>
                     <div class="project-links">
-                        {% if project.github_url %}<a href="{{ project.github_url }}" target="_blank" rel="noreferrer">GitHub ↗</a>{% endif %}
-                        {% if project.live_demo_url %}<a href="{{ project.live_demo_url }}" target="_blank" rel="noreferrer">Live demo ↗</a>{% endif %}
+                        {% if project.github_url %}<a href="{{ project.github_url }}" target="_blank" rel="noreferrer">GitHub â†—</a>{% endif %}
+                        {% if project.live_demo_url %}<a href="{{ project.live_demo_url }}" target="_blank" rel="noreferrer">Live demo â†—</a>{% endif %}
                     </div>
                 </div>
             </article>
@@ -147,8 +147,8 @@
                     <div><h3>{{ project.title }}</h3><p>{{ project.summary }}</p></div>
                     <div class="project-row-stack">{{ project.tech_stack }}</div>
                     <div class="project-row-link">
-                        {% if project.live_demo_url %}<a href="{{ project.live_demo_url }}" target="_blank" rel="noreferrer">Open ↗</a>
-                        {% elif project.github_url %}<a href="{{ project.github_url }}" target="_blank" rel="noreferrer">Repo ↗</a>{% endif %}
+                        {% if project.live_demo_url %}<a href="{{ project.live_demo_url }}" target="_blank" rel="noreferrer">Open â†—</a>
+                        {% elif project.github_url %}<a href="{{ project.github_url }}" target="_blank" rel="noreferrer">Repo â†—</a>{% endif %}
                     </div>
                 </article>
                 {% endif %}
@@ -168,10 +168,10 @@
         <div class="timeline">
             {% for item in experiences %}
             <article class="timeline-item reveal">
-                <div class="timeline-date">{% if item.start_date %}{{ item.start_date|date:"M Y" }}{% endif %}{% if item.start_date or item.end_date or item.current %} — {% endif %}{% if item.current %}Now{% elif item.end_date %}{{ item.end_date|date:"M Y" }}{% endif %}</div>
+                <div class="timeline-date">{% if item.start_date %}{{ item.start_date|date:"M Y" }}{% endif %}{% if item.start_date or item.end_date or item.current %} â€” {% endif %}{% if item.current %}Now{% elif item.end_date %}{{ item.end_date|date:"M Y" }}{% endif %}</div>
                 <div class="timeline-marker"></div>
                 <div class="timeline-content">
-                    <p class="timeline-org">{{ item.company }}{% if item.location %} · {{ item.location }}{% endif %}</p>
+                    <p class="timeline-org">{{ item.company }}{% if item.location %} Â· {{ item.location }}{% endif %}</p>
                     <h3>{{ item.role }}</h3>
                     <p>{{ item.description }}</p>
                     {% if item.tech_list %}
@@ -198,12 +198,12 @@
             <article class="timeline-item reveal">
                 <div class="timeline-date">
                     {% if item.start_date %}{{ item.start_date|date:"Y" }}{% endif %}
-                    {% if item.start_date and item.end_date %} � {% endif %}
+                    {% if item.start_date and item.end_date %} — {% endif %}
                     {% if item.end_date %}{{ item.end_date|date:"Y" }}{% elif item.start_date %}Now{% endif %}
                 </div>
                 <div class="timeline-marker"></div>
                 <div class="timeline-content">
-                    <p class="timeline-org">{{ item.institution }}{% if item.location %} � {{ item.location }}{% endif %}</p>
+                    <p class="timeline-org">{{ item.institution }}{% if item.location %} · {{ item.location }}{% endif %}</p>
                     <h3>{{ item.degree }}</h3>
                     <p class="education-field" style="color: var(--accent); font-weight: 800; font-size: 13px; margin: 4px 0 8px;">{{ item.field_of_study }}</p>
                     
@@ -279,7 +279,7 @@
         <div class="profile-grid">
             {% for profile in coding_profiles %}
             <a class="profile-card reveal" href="{{ profile.profile_url }}" target="_blank" rel="noreferrer">
-                <div class="profile-top"><span>{{ profile.platform }}</span><span>↗</span></div>
+                <div class="profile-top"><span>{{ profile.platform }}</span><span>â†—</span></div>
                 <h3>{{ profile.username }}</h3>
                 {% if profile.stat_value %}<strong>{{ profile.stat_value }}</strong>{% endif %}
                 {% if profile.stat_label %}<span>{{ profile.stat_label }}</span>{% endif %}
@@ -307,7 +307,7 @@
                     <span>{{ item.date|date:"M Y" }}</span>
                     <h3>{{ item.title }}</h3>
                     <p>{{ item.description }}</p>
-                    {% if item.link_url %}<a href="{{ item.link_url }}" target="_blank" rel="noreferrer">Read more ↗</a>{% endif %}
+                    {% if item.link_url %}<a href="{{ item.link_url }}" target="_blank" rel="noreferrer">Read more â†—</a>{% endif %}
                 </div>
             </article>
             {% endfor %}
@@ -322,7 +322,7 @@
             <p class="eyebrow"><span class="section-no">09/</span> Contact</p>
             <h2>Have something worth building together?</h2>
             <p>A short note is enough. Tell me what you are working on, what needs fixing, or what role you are hiring for.</p>
-            {% if settings.email %}<a class="contact-email" href="mailto:{{ settings.email }}">{{ settings.email }} ↗</a>{% endif %}
+            {% if settings.email %}<a class="contact-email" href="mailto:{{ settings.email }}">{{ settings.email }} â†—</a>{% endif %}
         </div>
 
         <form class="contact-form reveal" method="post" action="{% url 'contact' %}">
@@ -339,7 +339,7 @@
                     {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
                 {% endfor %}
             {% endif %}
-            <button class="button button-dark" type="submit">Send message <span aria-hidden="true">→</span></button>
+            <button class="button button-dark" type="submit">Send message <span aria-hidden="true">â†’</span></button>
             {% endwith %}
         </form>
     </div>
