@@ -68,12 +68,11 @@
             {% if site_settings.github_url %}<a href="{{ site_settings.github_url }}" target="_blank" rel="noreferrer">GitHub ↗</a>{% endif %}
             {% if site_settings.linkedin_url %}<a href="{{ site_settings.linkedin_url }}" target="_blank" rel="noreferrer">LinkedIn ↗</a>{% endif %}
             {% if site_settings.email %}<a href="mailto:{{ site_settings.email }}">Email ↗</a>{% endif %}
-            <a href="{% url 'login' %}">CMS ↗</a>
         </div>
     </div>
     <div class="shell footer-bottom">
         <span>© <span data-current-year></span> {{ site_settings.owner_name }}</span>
-        <span>Built with Django · Designed to evolve</span>
+        <span>Built with Django · <a href="{% url 'login' %}" style="opacity: 0.4;">CMS ↗</a></span>
     </div>
 </footer>
 {% endif %}

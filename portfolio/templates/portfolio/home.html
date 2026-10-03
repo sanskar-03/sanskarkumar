@@ -1,5 +1,5 @@
 {% extends "portfolio/base.html" %}
-
+{% load static %}
 {% block title %}{{ settings.site_title }}{% endblock %}
 
 {% block content %}
@@ -28,12 +28,8 @@
         </div>
 
         <div class="hero-panel reveal">
-            <div class="portrait-card">
-                {% if settings.profile_image_url %}
-                    <img src="{{ settings.profile_image_url }}" alt="{{ settings.owner_name }}">
-                {% else %}
-                    <div class="portrait-placeholder">{{ settings.owner_name|slice:":1" }}</div>
-                {% endif %}
+            <div class="hero-image">
+                <img src="{% static 'portfolio/images/profile.webp' %}" alt="{{ settings.owner_name }}">
             </div>
             <div class="hero-note">
                 <span>Currently</span>
@@ -76,12 +72,11 @@
             {% for group in skill_groups %}
             <div class="skill-group reveal">
                 <div class="skill-group-head"><span>{{ group.grouper }}</span><span>{{ group.list|length }}</span></div>
-                {% for skill in group.list %}
-                <div class="skill-item">
-                    <div class="skill-name"><span>{{ skill.name }}</span><span>{{ skill.level }}%</span></div>
-                    <div class="skill-bar"><span style="width: {{ skill.level }}%; --skill-level: {{ skill.level }}%"></span></div>
-                </div>
-                {% endfor %}
+                <ul class="skill-list">
+                    {% for skill in group.list %}
+                    <li class="skill-item-new">{{ skill.name }}</li>
+                    {% endfor %}
+                </ul>
             </div>
             {% endfor %}
         </div>
