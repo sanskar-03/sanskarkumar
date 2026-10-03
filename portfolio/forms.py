@@ -107,6 +107,7 @@ class SkillForm(StyledFormMixin, forms.ModelForm):
         model = Skill
         fields = "__all__"
         widgets = {
+            "name": forms.Textarea(attrs={"rows": 4, "placeholder": "Enter skills separated by commas or newlines"}),
             "level": forms.NumberInput(attrs={"type": "range", "min": "0", "max": "100", "step": "5"}),
         }
 

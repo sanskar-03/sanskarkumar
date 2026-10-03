@@ -80,6 +80,11 @@ class Skill(models.Model):
     class Meta:
         ordering = ["order", "category", "name"]
 
+    @property
+    def names_list(self):
+        import re
+        return [item.strip() for item in re.split(r'[,\n]+', self.name) if item.strip()]
+
     def __str__(self):
         return self.name
 
@@ -118,8 +123,13 @@ class Project(models.Model):
         super().save(*args, **kwargs)
 
     @property
+    def features_list(self):
+        return [item.strip().lstrip('•*- ') for item in self.features.strip().split("\n") if item.strip()]
+
+    @property
     def tech_list(self):
-        return [item.strip() for item in self.tech_stack.split(",") if item.strip()]
+        import re
+        return [item.strip() for item in re.split(r'[,\n]+', self.tech_stack) if item.strip()]
 
     def __str__(self):
         return self.title
@@ -142,7 +152,8 @@ class Experience(models.Model):
 
     @property
     def tech_list(self):
-        return [item.strip() for item in self.tech_stack.split(",") if item.strip()]
+        import re
+        return [item.strip() for item in re.split(r'[,\n]+', self.tech_stack) if item.strip()]
 
     def __str__(self):
         return f"{self.role} — {self.company}"

@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
         techPreview.innerHTML = "";
 
         const values = techInput.value
-            .split(",")
+            .split(/[,\n]+/)
             .map(item => item.trim())
             .filter(Boolean);
 
