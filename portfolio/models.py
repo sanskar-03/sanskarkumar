@@ -89,6 +89,7 @@ class Project(models.Model):
     slug = models.SlugField(max_length=160, unique=True, blank=True)
     summary = models.CharField(max_length=240)
     description = models.TextField()
+    features = models.TextField(blank=True, help_text="List key project features (e.g. AI matching, Live chat).")
     tech_stack = models.CharField(
         max_length=400,
         help_text="Comma-separated, for example: Django, PostgreSQL, JavaScript",

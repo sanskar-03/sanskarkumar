@@ -45,6 +45,11 @@ class SiteSettingsForm(StyledFormMixin, forms.ModelForm):
             "coming_soon", "coming_soon_title", "coming_soon_message",
             "footer_note",
         ]
+        labels = {
+            "role_line": "Main title / Role",
+            "intro": "Short headline",
+            "about": "About / Bio",
+        }
         widgets = {
             "site_title": forms.TextInput(attrs={"placeholder": "Sanskar Kumar | Portfolio"}),
             "owner_name": forms.TextInput(attrs={"placeholder": "Sanskar Kumar"}),
@@ -79,11 +84,17 @@ class ProjectForm(StyledFormMixin, forms.ModelForm):
     class Meta:
         model = Project
         fields = "__all__"
+        labels = {
+            "summary": "Short description",
+            "description": "Detailed description",
+            "features": "Features",
+        }
         widgets = {
             "title": forms.TextInput(attrs={"placeholder": "StudyForge", "autocomplete": "off"}),
             "slug": forms.TextInput(attrs={"placeholder": "studyforge", "autocomplete": "off"}),
             "summary": forms.Textarea(attrs={"rows": 3, "maxlength": 240, "placeholder": "One concise sentence describing the project."}),
             "description": forms.Textarea(attrs={"rows": 9, "placeholder": "Explain what the project does, how it works and what you built."}),
+            "features": forms.Textarea(attrs={"rows": 6, "placeholder": "Bullet point list of main features..."}),
             "tech_stack": forms.TextInput(attrs={"placeholder": "Python, Django, PostgreSQL, JavaScript"}),
             "github_url": forms.URLInput(attrs={"placeholder": "https://github.com/username/project", "autocomplete": "url"}),
             "live_demo_url": forms.URLInput(attrs={"placeholder": "https://example.com", "autocomplete": "url"}),
