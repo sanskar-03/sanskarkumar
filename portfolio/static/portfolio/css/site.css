@@ -221,6 +221,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .hero-numbers small { color: var(--ink-soft); font-size: 10px; text-transform: uppercase; letter-spacing: .11em; }
 
 .split-section { display: grid; grid-template-columns: .28fr .72fr; gap: 64px; }
+.dual-section { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
 .section-no { color: var(--accent); margin-right: 7px; }
 .section-kicker { color: var(--ink-soft); font-size: 11px; font-weight: 850; letter-spacing: .15em; text-transform: uppercase; }
 .section-body h2, .section-heading h2, .contact-copy h2 { margin: 0; font: 500 clamp(36px, 5vw, 62px)/1.02 var(--serif); letter-spacing: -.045em; }
@@ -403,7 +404,7 @@ html[data-theme="dark"] .coming-foot { border-top-color: rgba(255,255,255,.1); }
     .hero-copy::before { display: none; }
     .coming-grid { gap: 36px; padding: 48px 0; }
     .coming-card { max-width: 600px; }
-    .split-section { grid-template-columns: 1fr; }
+    .split-section, .dual-section { grid-template-columns: 1fr; }
     .auth-grid { gap: 38px; }
     .auth-card { max-width: 540px; width: 100%; }
 }
@@ -412,7 +413,7 @@ html[data-theme="dark"] .coming-foot { border-top-color: rgba(255,255,255,.1); }
     .section-pad { padding: 86px 0; }
     .header-inner { padding-right: 56px; }
     .menu-toggle { display: inline-flex; align-items: center; }
-    .site-nav { display: none; position: absolute; top: var(--header); left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; padding: 10px 22px 18px; background: color-mix(in srgb, var(--paper) 96%, transparent); border-bottom: 1px solid var(--line); box-shadow: 0 20px 35px rgba(0,0,0,.06); }
+    .site-nav { display: none; position: absolute; top: var(--header); left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; padding: 10px 22px 18px; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); box-shadow: 0 20px 35px rgba(0,0,0,.06); }
     .site-nav.is-open { display: flex; }
     .site-nav a { padding: 13px 0; }
     .site-nav a::after { bottom: 7px; }

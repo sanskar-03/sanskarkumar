@@ -29,7 +29,11 @@
 
         <div class="hero-panel reveal">
             <div class="hero-image">
-                <img src="{% static 'portfolio/images/profile.webp' %}" alt="{{ settings.owner_name }}">
+                {% if settings.profile_image_url %}
+                    <img src="{{ settings.profile_image_url }}" alt="{{ settings.owner_name }}">
+                {% else %}
+                    <img src="{% static 'portfolio/images/profile.webp' %}" alt="{{ settings.owner_name }}">
+                {% endif %}
             </div>
             <div class="hero-note">
                 <span>Currently</span>
@@ -166,7 +170,7 @@
 </section>
 
 <section id="education" class="section-pad section-tinted">
-    <div class="shell split-section">
+    <div class="shell dual-section">
         <div>
             <div class="section-kicker reveal"><span class="section-no">05/</span> Education</div>
             <div class="education-stack">
