@@ -154,3 +154,17 @@ class DashboardLoginForm(AuthenticationForm):
         strip=False,
         widget=forms.PasswordInput(attrs={"class": "field-control", "autocomplete": "current-password"}),
     )
+
+from .models import DraftItem
+
+class DraftItemForm(forms.ModelForm):
+    class Meta:
+        model = DraftItem
+        fields = ["source", "draft_type", "title", "description", "link_url"]
+        widgets = {
+            "source": forms.Select(attrs={"class": "field-control"}),
+            "draft_type": forms.TextInput(attrs={"class": "field-control"}),
+            "title": forms.TextInput(attrs={"class": "field-control"}),
+            "description": forms.Textarea(attrs={"class": "field-control", "rows": 4}),
+            "link_url": forms.URLInput(attrs={"class": "field-control"}),
+        }

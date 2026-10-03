@@ -196,6 +196,7 @@
                         <h3>{{ item.name }}</h3>
                         <p>{{ item.issuer }}{% if item.issue_date %} · {{ item.issue_date|date:"M Y" }}{% endif %}</p>
                         {% if item.credential_url %}<a href="{{ item.credential_url }}" target="_blank" rel="noreferrer">View credential ↗</a>{% endif %}
+                        {% if item.certificate_file %}<a href="{{ item.certificate_file.url }}" target="_blank" rel="noreferrer" style="margin-left: 12px;">Download Certificate ↗</a>{% endif %}
                     </div>
                 </article>
                 {% empty %}

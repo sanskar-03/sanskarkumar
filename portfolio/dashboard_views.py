@@ -17,6 +17,7 @@ from .forms import (
     SiteSettingsForm,
     SkillForm,
     SocialLinkForm,
+    DraftItemForm,
 )
 from .models import (
     Achievement,
@@ -29,6 +30,7 @@ from .models import (
     SiteSettings,
     Skill,
     SocialLink,
+    DraftItem,
 )
 
 
@@ -42,6 +44,8 @@ class SectionConfig:
 
 
 SECTIONS = {
+    "drafts": SectionConfig("Draft", "Drafts", DraftItem, DraftItemForm,
+        (("Source", "source"), ("Type", "draft_type"), ("Title", "title"), ("Created", "created_at"))),
     "projects": SectionConfig("Project", "Projects", Project, ProjectForm,
         (("Title", "title"), ("Stack", "tech_stack"), ("Featured", "featured"), ("Visible", "visible"))),
     "skills": SectionConfig("Skill", "Skills", Skill, SkillForm,
@@ -221,3 +225,43 @@ def message_delete(request, pk):
         "portfolio/dashboard/message_delete.html",
         {"item": item},
     )
+
+@login_required
+def approve_draft(request, pk):
+    draft = get_object_or_404(DraftItem, pk=pk)
+    
+    # Simple logic to convert a draft to actual item
+    t = draft.draft_type.lower()
+    if 'project' in t:
+        Project.objects.create(title=draft.title, summary=draft.description, description=draft.description, link_url=draft.link_url)
+    elif 'achieve' in t:
+        Achievement.objects.create(title=draft.title, description=draft.description, link_url=draft.link_url)
+    elif 'exper' in t:
+        Experience.objects.create(company=draft.title, role="Role from Draft", description=draft.description)
+    else:
+        Achievement.objects.create(title=draft.title, description=draft.description, link_url=draft.link_url)
+        
+    draft.delete()
+    messages.success(request, f"Draft '{draft.title}' approved and published.")
+    return redirect("dashboard_list", kind="drafts")
+
+@login_required
+def trigger_external_fetch(request):
+    # Dummy logic mimicking fetch
+    # In reality, this would hit GitHub/LinkedIn API
+    DraftItem.objects.create(
+        source="github", 
+        draft_type="Project", 
+        title="Auto-fetched repo: Cool-Project", 
+        description="A cool project found on GitHub.",
+        link_url="https://github.com/your-username/Cool-Project"
+    )
+    DraftItem.objects.create(
+        source="linkedin",
+        draft_type="Achievement",
+        title="New LinkedIn Certification",
+        description="Auto-fetched post about completing a new course.",
+        link_url="https://linkedin.com/in/your-username/"
+    )
+    messages.success(request, "External sources checked. Found new items and created drafts.")
+    return redirect("dashboard_list", kind="drafts")

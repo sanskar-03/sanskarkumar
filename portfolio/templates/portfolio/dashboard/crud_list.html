@@ -7,7 +7,10 @@
 <section class="dashboard-card">
     <div class="card-head">
         <div><span class="dashboard-kicker">CONTENT</span><h2>{{ config.plural }}</h2></div>
-        <a class="button button-dark button-small" href="{% url 'dashboard_create' kind=kind %}">Add {{ config.label }}</a>
+        <div>
+            {% if kind == 'drafts' %}<a class="button button-accent button-small" href="{% url 'dashboard_trigger_fetch' %}">Fetch New Data</a>{% endif %}
+            <a class="button button-dark button-small" href="{% url 'dashboard_create' kind=kind %}">Add {{ config.label }}</a>
+        </div>
     </div>
 
     {% if items %}
@@ -22,6 +25,7 @@
                     {% for label, field in config.columns %}<td>{{ item|get_field:field|pretty_value }}</td>{% endfor %}
                     <td class="actions-cell">
                         <div class="inline-actions">
+                            {% if kind == 'drafts' %}<a class="accent-link" href="{% url 'dashboard_approve_draft' pk=item.pk %}">Approve</a>{% endif %}
                             <a href="{% url 'dashboard_edit' kind=kind pk=item.pk %}">Edit</a>
                             <a class="danger-link" href="{% url 'dashboard_delete' kind=kind pk=item.pk %}">Delete</a>
                         </div>
